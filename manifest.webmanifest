@@ -1,0 +1,14 @@
+{
+  "id": "./",
+  "name": "Random food - สั่งอาหารพร้อมสุ่มเมนู",
+  "short_name": "Random food",
+  "description": "เลือกเมนูอาหาร สุ่มอาหาร และทดลองสั่งอาหาร",
+  "lang": "th-TH",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fffaf7",
+  "theme_color": "#f36b3f",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
