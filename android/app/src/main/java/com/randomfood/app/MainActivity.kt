@@ -196,7 +196,7 @@ fun RandomFoodApp() {
             }
         ) { padding ->
             when (tab) {
-                4 -> CartScreen(cart, onChange = { cart = it }, onBack = { tab = 1 }, modifier = Modifier.padding(padding))
+                4 -> CartScreen(cart, onChange = { cart = it }, onBack = { tab = 1 }, onCheckout = { dialog = "checkout" }, modifier = Modifier.padding(padding))
                 3 -> RestaurantScreen(search, modifier = Modifier.padding(padding), onSelect = { restaurant ->
                     category = "ทั้งหมด"
                     search = ""
@@ -505,7 +505,7 @@ private fun RestaurantCard(restaurant: Restaurant, onClick: () -> Unit) {
 }
 
 @Composable
-private fun CartScreen(cart: Map<Int, Int>, onChange: (Map<Int, Int>) -> Unit, onBack: () -> Unit, modifier: Modifier = Modifier) {
+private fun CartScreen(cart: Map<Int, Int>, onChange: (Map<Int, Int>) -> Unit, onBack: () -> Unit, onCheckout: () -> Unit, modifier: Modifier = Modifier) {
     val subtotal = cart.entries.sumOf { entry -> (foods.find { it.id == entry.key }?.price ?: 0) * entry.value }
     val delivery = if (cart.isEmpty()) 0 else 10
     LazyColumn(modifier = modifier.fillMaxSize().background(Page), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -543,7 +543,7 @@ private fun CartScreen(cart: Map<Int, Int>, onChange: (Map<Int, Int>) -> Unit, o
                 SummaryLine("ค่าอาหาร", subtotal)
                 SummaryLine("ค่าส่ง (ตัวอย่าง)", delivery)
                 SummaryLine("ยอดรวม", subtotal + delivery, true)
-                Button(onClick = { onChange(cart); /* checkout dialog opened by parent action below is intentionally handled via message */ },
+                Button(onClick = onCheckout,
                     modifier = Modifier.fillMaxWidth().height(49.dp), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Orange)) {
                     Text("ตรวจสอบรายการ", fontWeight = FontWeight.Bold)
                 }
