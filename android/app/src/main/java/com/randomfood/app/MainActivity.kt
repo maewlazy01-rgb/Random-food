@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -59,10 +60,33 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RandomFoodApp() {
+    val context = LocalContext.current
+    val preferences = remember(context) { context.getSharedPreferences("random_food_preferences", android.content.Context.MODE_PRIVATE) }
     var chosen by remember { mutableStateOf<Food?>(null) }
-    var budget by remember { mutableIntStateOf(80) }
-    var favorites by remember { mutableStateOf(setOf<String>()) }
-    var cart by remember { mutableStateOf(mapOf<String, Int>()) }
+    var budget by remember(preferences) { mutableIntStateOf(preferences.getInt("budget", 80).coerceIn(30, 150)) }
+    var favorites by remember(preferences) {
+        mutableStateOf(preferences.getStringSet("favorites", emptySet())?.toSet() ?: emptySet())
+    }
+    var cart by remember(preferences) {
+        mutableStateOf(
+            preferences.getString("cart", "").orEmpty().split("|")
+                .filter { it.contains("=") }
+                .mapNotNull { entry ->
+                    val parts = entry.split("=", limit = 2)
+                    parts.getOrNull(1)?.toIntOrNull()?.takeIf { it > 0 }?.let { parts[0] to it }
+                }.toMap()
+        )
+    }
+    LaunchedEffect(favorites) {
+        preferences.edit().putStringSet("favorites", favorites.toSet()).apply()
+    }
+    LaunchedEffect(cart) {
+        val serializedCart = cart.entries.joinToString("|") { it.key + "=" + it.value }
+        preferences.edit().putString("cart", serializedCart).apply()
+    }
+    LaunchedEffect(budget) {
+        preferences.edit().putInt("budget", budget).apply()
+    }
     var tab by remember { mutableIntStateOf(0) }
     var category by remember { mutableStateOf("ทั้งหมด") }
     var search by remember { mutableStateOf("") }
