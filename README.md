@@ -1,37 +1,35 @@
-# 🍜 Random food — Native Mobile App
+# 🍜 Random food — Native Android App
 
-โปรเจกต์ Random-food แยกจาก MealMatch และมีซอร์สโค้ด Native แยกตามแพลตฟอร์ม Android และ iPhone ไม่ใช่ PWA
+โปรเจกต์ Random-food ทำเป็นแอป Android แบบ Native ด้วย **Kotlin + Jetpack Compose** แยกจาก MealMatch โดยสิ้นเชิง
 
-## แพลตฟอร์ม
-- **Android:** Kotlin + Jetpack Compose — โฟลเดอร์ `android/`
-- **iPhone / iOS:** Swift + SwiftUI — โฟลเดอร์ `ios/RandomFood/`
-
-## ฟีเจอร์ใน Native starter
+## ฟีเจอร์ปัจจุบัน
 - แสดงรายการเมนูอาหารตัวอย่าง
-- เลือกงบประมาณต่อมื้อและสุ่มเมนูที่อยู่ในงบ
+- ปรับงบประมาณต่อมื้อและสุ่มเมนูที่อยู่ในงบ
 - เลือกเมนูจากรายการ
 - เพิ่ม/นำเมนูออกจากรายการโปรด
 - หน้าจอ Native พร้อมแท็บนำทาง
 
-## เปิดบน Android
-1. เปิด Android Studio แล้วเลือกโฟลเดอร์ `android/`
-2. รอ Gradle Sync (ใช้ JDK 17 และ Android SDK ที่ Android Studio แนะนำ)
-3. เลือก Android Emulator หรือโทรศัพท์ Android แล้วกด **Run**
+## เปิดโปรเจกต์บน Android
+1. ติดตั้ง Android Studio และ JDK 17
+2. เปิดโฟลเดอร์ `android/` ใน Android Studio
+3. ติดตั้ง Android SDK ที่ Android Studio แนะนำ และรอ Gradle Sync
+4. เลือก Android Emulator หรือเชื่อมต่อโทรศัพท์ Android แล้วกด **Run**
 
-หมายเหตุ: ยังไม่ได้แนบ Gradle Wrapper; Android Studio อาจขอให้ตั้งค่า Gradle ก่อน
+## สร้าง APK ผ่าน GitHub Actions
+มี workflow สำหรับ build APK ที่ไฟล์ `.github/workflows/android.yml`
+1. เปิดแท็บ **Actions** ของ repository
+2. เลือก **Android APK** แล้วกด **Run workflow** หรือ push การเปลี่ยนแปลงในโฟลเดอร์ `android/`
+3. เมื่อ workflow สำเร็จ เปิดรายการรันล่าสุด แล้วดาวน์โหลด artifact ชื่อ `Random-food-Android-debug`
+4. แตกไฟล์ ZIP เพื่อรับ `app-debug.apk`
 
-## เปิดบน iPhone
-ต้องใช้ Mac ที่ติดตั้ง Xcode:
-1. สร้างโปรเจกต์ใหม่ชนิด **iOS App** ชื่อ `RandomFood` และเลือก SwiftUI
-2. นำ `ios/RandomFood/RandomFoodApp.swift` และ `ios/RandomFood/ContentView.swift` ไปใส่ในโปรเจกต์
-3. เลือก iPhone Simulator แล้วกด **Run**
+> APK จะดาวน์โหลดได้ก็ต่อเมื่อ workflow รันสำเร็จแล้วเท่านั้น ปัจจุบันยังไม่ได้ยืนยันผล build จากเครื่องมือในบทสนทนานี้
 
-## หมายเหตุ
-โค้ดนี้เป็น **Native app starter** มีระบบสุ่มเมนูและรายการโปรดพื้นฐาน ยังไม่ใช่ไฟล์ติดตั้งสำเร็จ (.apk/.aab/.ipa) และยังไม่มีระบบหลังบ้าน บัญชีสมาชิกจริง การสั่งซื้อจริง แผนที่/ตำแหน่งร้าน หรือชำระเงินจริง เมนูและราคาเป็นข้อมูลตัวอย่าง
+## ขอบเขตตอนนี้
+นี่คือเวอร์ชัน Android ระยะแรก เมนูและราคาเป็นข้อมูลตัวอย่าง รายการโปรดยังไม่เชื่อมฐานข้อมูลหรือบัญชีสมาชิก และยังไม่มีระบบค้นหาร้านจริง แผนที่ การสั่งซื้อ หรือชำระเงิน
 
-ไฟล์ `index.html` และไฟล์เว็บเดิมยังคงเก็บไว้เป็นต้นแบบอ้างอิง ไม่ได้เป็นตัวแอป Native โปรเจกต์นี้แยกจาก MealMatch โดยสิ้นเชิง
+ไฟล์เว็บเดิม เช่น `index.html` ยังคงอยู่เป็นต้นแบบอ้างอิง แต่ไม่ใช่ตัวแอป Native ส่วนการทำ iPhone พักไว้ก่อนตามแผน และโปรเจกต์นี้ไม่แก้ไขหรือทับ MealMatch
 
 ## โครงสร้าง
 - `android/` — แอป Android (Kotlin / Jetpack Compose)
-- `ios/RandomFood/` — ซอร์สโค้ดแอป iOS (Swift / SwiftUI)
+- `ios/RandomFood/` — ไฟล์ต้นแบบ iOS ที่เก็บไว้ แต่ยังไม่อยู่ในขอบเขตงานรอบนี้
 - `index.html` — เว็บต้นแบบเดิม
