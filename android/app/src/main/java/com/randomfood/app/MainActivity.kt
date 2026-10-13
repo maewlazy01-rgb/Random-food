@@ -108,7 +108,7 @@ fun RandomFoodApp() {
     var randomCategory by remember { mutableStateOf("อาหารทุกประเภท") }
     var heat by remember { mutableStateOf("ทุกระดับความเผ็ด") }
     var chosen by remember { mutableStateOf<Food?>(null) }
-    var favorites by remember { mutableStateOf(prefs.getStringSet("favorites", emptySet())?.toSet() ?: emptySet()) }
+    var favorites by remember { mutableStateOf<Set<Int>>(prefs.getStringSet("favorites", emptySet<String>())?.mapNotNull { it.toIntOrNull() }?.toSet() ?: emptySet()) }
     var cart by remember {
         mutableStateOf(prefs.getString("cart", "").orEmpty().split("|").filter { it.contains("=") }.mapNotNull {
             val p = it.split("=", limit = 2); p.getOrNull(1)?.toIntOrNull()?.takeIf { n -> n > 0 }?.let { n -> p[0].toIntOrNull()?.let { id -> id to n } }
@@ -123,7 +123,7 @@ fun RandomFoodApp() {
     var customerAddress by remember { mutableStateOf("") }
     var reportText by remember { mutableStateOf("") }
 
-    LaunchedEffect(favorites) { prefs.edit().putStringSet("favorites", favorites.toSet()).apply() }
+    LaunchedEffect(favorites) { prefs.edit().putStringSet("favorites", favorites.map { it.toString() }.toSet()).apply() }
     LaunchedEffect(cart) { prefs.edit().putString("cart", cart.entries.joinToString("|") { it.key.toString() + "=" + it.value }).apply() }
     LaunchedEffect(budget) { prefs.edit().putInt("budget", budget).apply() }
 
